@@ -10,10 +10,12 @@ db.init_app(app)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
-    email = db.Column(db.String)
+    password = db.Column(db.String)
 
 @app.route("/")
 def index():
+    dbuser = db.engine.execute('SELECT * FROM `user`')
+    print(dbuser.all())
     return render_template('index.html')
 
 @app.route("/404")

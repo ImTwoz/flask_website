@@ -48,6 +48,14 @@ def profile():
         return redirect(url_for('login'))
     return render_template('profile.html')
 
+@app.route("/logout")
+def logout():
+    if not session.get("username"):
+        return redirect(url_for('login'))
+    
+    session.pop('username')
+    return redirect(url_for('login'))
+
 @app.route("/cart")
 def cart():
     return render_template('cart.html')

@@ -44,8 +44,14 @@ def login():
 @app.route("/profile")
 def profile():
     if not session.get("username"):
+<<<<<<< HEAD
         return redirect(url_for('/auth'))
 
+=======
+        return redirect(url_for('login'))
+    
+    user = session['username']
+>>>>>>> c92b4dc8f5a7b874110354d56972d82c5a165792
     return render_template('profile.html')
 
 @app.route("/logout")

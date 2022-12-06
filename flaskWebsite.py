@@ -21,7 +21,6 @@ class User(db.Model):
 @app.route("/")
 def index():
     dbuser = db.session.query(User).all()
-    # print(dbuser)
     for user in dbuser:
         print(user.email)
     return render_template('index.html')
@@ -30,23 +29,32 @@ def index():
 def error404():
     return render_template('404.html')
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/auth", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user = request.form.get('login-form-username')
-        password = request.form.get('login-form-password')
+            if request.form.get('login-form-submit'):
+                if User.query.filter_by(username = request.form.get('login-form-username')).filter_by(password = request.form.get('login-form-password')).first():
+                    session['username'] = request.form.get('login-form-username')
+                    return redirect(url_for('profile'))
+            # elif request.form.get('register-form-submit'):
 
-        if User.query.filter_by(username = user).filter_by(password = password).first():
-            session['username'] = request.form.get('login-form-username')
-            return redirect(url_for('profile'))
-    
-    return render_template('login.html')
+
+    return render_template('login-register.html')
 
 @app.route("/profile")
 def profile():
     if not session.get("username"):
-        return redirect(url_for('login'))
+        return redirect(url_for('/auth'))
+
     return render_template('profile.html')
+
+@app.route("/logout")
+def logout():
+    if not session.get("username"):
+        return redirect(url_for('login'))
+    
+    session.pop('username')
+    return redirect(url_for('login'))
 
 @app.route("/cart")
 def cart():

@@ -31,15 +31,24 @@ def error404():
 
 @app.route("/auth", methods=['GET', 'POST'])
 def login():
+    msg = ''
     if request.method == 'POST':
             if request.form.get('login-form-submit'):
                 if User.query.filter_by(username = request.form.get('login-form-username')).filter_by(password = request.form.get('login-form-password')).first():
                     session['username'] = request.form.get('login-form-username')
                     return redirect(url_for('profile'))
-            # elif request.form.get('register-form-submit'):
-
-
-    return render_template('login-register.html')
+            elif request.form.get('register-form-submit'):
+                if request.form.get('register-form-password') != request.form.get('register-form-repassword'):
+                    return redirect(url_for('auth'))
+                if '@' not in request.form.get('register-form-email'):
+                    return redirect(url_for('auth'))
+                
+                toCommit = User(username = request.form.get('register-form-username'), email = request.form.get('register-form-email'), password = request.form.get('register-form-password'))
+                db.session.add(toCommit)
+                db.session.commit()
+                msg = 'Registo completo!'
+                
+    return render_template('login-register.html', msg = msg)
 
 @app.route("/profile")
 def profile():

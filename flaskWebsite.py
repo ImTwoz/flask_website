@@ -46,9 +46,8 @@ def login():
                 toCommit = User(username = request.form.get('register-form-username'), email = request.form.get('register-form-email'), password = request.form.get('register-form-password'))
                 db.session.add(toCommit)
                 db.session.commit()
-                msg = 'Registo completo!'
                 
-    return render_template('login-register.html', msg = msg)
+    return render_template('login-register.html')
 
 @app.route("/profile")
 def profile():

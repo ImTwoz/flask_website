@@ -18,7 +18,7 @@
 							<img src="staticFiles/images/icons/avatar.jpg" class="alignleft img-circle img-thumbnail my-0" alt="Avatar" style="max-width: 84px;">
 
 							<div class="heading-block border-0">
-								<h3>SemiColonWeb</h3>
+								<h3>Olá, {{session['username']}}</h3>
 								<span>Your Profile Bio</span>
 							</div>
 
@@ -368,7 +368,7 @@
 								<a href="#" class="list-group-item list-group-item-action d-flex justify-content-between"><div>Messages</div><i class="icon-envelope2"></i></a>
 								<a href="#" class="list-group-item list-group-item-action d-flex justify-content-between"><div>Billing</div><i class="icon-credit-cards"></i></a>
 								<a href="#" class="list-group-item list-group-item-action d-flex justify-content-between"><div>Settings</div><i class="icon-cog"></i></a>
-								<a href="#" class="list-group-item list-group-item-action d-flex justify-content-between"><div>Logout</div><i class="icon-line2-logout"></i></a>
+								<a href="{{url_for('logout')}}" class="list-group-item list-group-item-action d-flex justify-content-between"><div>Logout</div><i class="icon-line2-logout"></i></a>
 							</div>
 
 							<div class="fancy-title topmargin title-border">

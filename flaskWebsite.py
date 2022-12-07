@@ -15,14 +15,20 @@ db.init_app(app)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)   
     username = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String)
-    email = db.Column(db.String(50))
+    password = db.Column(db.String, unique=False, nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+
+@app.route('/shop-single')
+def teste():
+    return render_template('shop-single.html')
 
 @app.route("/")
 def index():
     dbuser = db.session.query(User).all()
     for user in dbuser:
         print(user.email)
+    
+    
     return render_template('index.html')
 
 @app.route("/404")
@@ -31,28 +37,28 @@ def error404():
 
 @app.route("/auth", methods=['GET', 'POST'])
 def login():
-    msg = ''
     if request.method == 'POST':
             if request.form.get('login-form-submit'):
                 if User.query.filter_by(username = request.form.get('login-form-username')).filter_by(password = request.form.get('login-form-password')).first():
                     session['username'] = request.form.get('login-form-username')
                     return redirect(url_for('profile'))
             elif request.form.get('register-form-submit'):
-                if request.form.get('register-form-password') != request.form.get('register-form-repassword'):
-                    return redirect(url_for('auth'))
-                if '@' not in request.form.get('register-form-email'):
-                    return redirect(url_for('auth'))
-                
-                toCommit = User(username = request.form.get('register-form-username'), email = request.form.get('register-form-email'), password = request.form.get('register-form-password'))
-                db.session.add(toCommit)
-                db.session.commit()
+                if User.query.filter_by(username = request.form.get('register-form-username')).scalar() is None or User.query.filter_by(email = request.form.get('register-form-email')).scalar() is None:
+                    if request.form.get('register-form-password') != request.form.get('register-form-repassword'):
+                        return redirect(url_for('auth'))
+                    if '@' not in request.form.get('register-form-email'):
+                        return redirect(url_for('auth'))
+
+                    toCommit = User(username = request.form.get('register-form-username'), email = request.form.get('register-form-email'), password = request.form.get('register-form-password'))
+                    db.session.add(toCommit)
+                    db.session.commit()
                 
     return render_template('login-register.html')
 
 @app.route("/profile")
 def profile():
     if not session.get("username"):
-        return redirect(url_for('/auth'))
+        return redirect(url_for('login'))
 
     return render_template('profile.html')
 

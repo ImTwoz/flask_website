@@ -18,17 +18,12 @@ class User(db.Model):
     password = db.Column(db.String, unique=False, nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
 
-@app.route('/shop-single')
-def teste():
-    return render_template('shop-single.html')
-
 @app.route("/")
 def index():
     dbuser = db.session.query(User).all()
     for user in dbuser:
         print(user.email)
-    
-    
+        
     return render_template('index.html')
 
 @app.route("/404")
@@ -43,7 +38,7 @@ def login():
                     session['username'] = request.form.get('login-form-username')
                     return redirect(url_for('profile'))
             elif request.form.get('register-form-submit'):
-                if User.query.filter_by(username = request.form.get('register-form-username')).scalar() is None or User.query.filter_by(email = request.form.get('register-form-email')).scalar() is None:
+                if User.query.filter_by(username = request.form.get('register-form-username')).count() < 1 or User.query.filter_by(email = request.form.get('register-form-email')).count() < 1:
                     if request.form.get('register-form-password') != request.form.get('register-form-repassword'):
                         return redirect(url_for('auth'))
                     if '@' not in request.form.get('register-form-email'):
@@ -65,7 +60,7 @@ def profile():
 @app.route("/logout")
 def logout():
     if not session.get("username"):
-        return redirect(url_for('login'))
+        return
     
     session.pop('username')
     return redirect(url_for('login'))

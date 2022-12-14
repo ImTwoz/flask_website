@@ -13,11 +13,11 @@
 
 									<div class="widget clearfix">
 
-										<img src="staticFiles/images/footer-widget-logo.png" alt="Image" class="footer-logo">
+										<img src="{{ url_for('static', filename='images/footer-widget-logo.png') }}" alt="Image" class="footer-logo">
 
 										<p>We believe in <strong>Simple</strong>, <strong>Creative</strong> &amp; <strong>Flexible</strong> Design Standards.</p>
 
-										<div style="background: url('staticFiles/images/world-map.png') no-repeat center center; background-size: 100%;">
+										<div style="background: url('{{ url_for('static', filename='images/world-map.png') }}') no-repeat center center; background-size: 100%;">
 											<address>
 												<strong>Headquarters:</strong><br>
 												795 Folsom Ave, Suite 600<br>

@@ -12,8 +12,15 @@ Session(app)
 db = SQLAlchemy(app)
 db.init_app(app)
 
-class User(db.Model):
+class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True)   
+    url = db.Column(db.String)
+    title = db.Column(db.String)
+    desc = db.Column(db.String)
+    price = db.Column(db.Integer)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, unique=False, nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
@@ -27,7 +34,8 @@ def index():
     return render_template('index.html')
 
 @app.route("/404")
-def error404():
+@app.errorhandler(404)
+def error404(e):
     return render_template('404.html')
 
 @app.route("/auth", methods=['GET', 'POST'])
@@ -64,6 +72,13 @@ def logout():
     
     session.pop('username')
     return redirect(url_for('login'))
+
+@app.route("/product/<int:id>")
+def product(id):
+    prodID = db.get_or_404(Products, id)
+    # print(Products.query.filter_by(id).first())
+    
+    return render_template("shop-single.html")
 
 @app.route("/cart")
 def cart():

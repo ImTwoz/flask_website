@@ -6,8 +6,8 @@
                 <!-- Logo
                 ============================================= -->
                 <div id="logo">
-                    <a href="/" class="standard-logo" data-dark-logo="staticFiles/images/logo-dark.png"><img src="staticFiles/images/logo.png" alt="Canvas Logo"></a>
-                    <a href="/" class="retina-logo" data-dark-logo="staticFiles/images/logo-dark@2x.png"><img src="staticFiles/images/logo@2x.png" alt="Canvas Logo"></a>
+                    <a href="/" class="standard-logo" data-dark-logo="{{ url_for('static', filename='images/logo-dark.png') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Canvas Logo"></a>
+                    <a href="/" class="retina-logo" data-dark-logo="{{ url_for('static', filename='images/logo-dark@2x.png') }}"><img src="{{ url_for('static', filename='images/logo@2x.png') }}" alt="Canvas Logo"></a>
                 </div><!-- #logo end -->
 
                 <div class="header-misc">

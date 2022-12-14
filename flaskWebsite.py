@@ -12,14 +12,21 @@ Session(app)
 db = SQLAlchemy(app)
 db.init_app(app)
 
+class prodIMG(db.Model):
+    __tablename__ = 'images'
+    id = db.Column(db.Integer, primary_key=True)
+    img1 = db.Column(db.String)
+    img2 = db.Column(db.String)
+    img3 = db.Column(db.String)
+
 class Products(db.Model):
+    __tablename__ = 'products'
     id = db.Column(db.Integer, primary_key=True)   
-    url = db.Column(db.String)
     title = db.Column(db.String)
-    desc = db.Column(db.String)
     price = db.Column(db.Integer)
 
 class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, unique=False, nullable=False)
@@ -75,10 +82,13 @@ def logout():
 
 @app.route("/product/<int:id>")
 def product(id):
-    prodID = db.get_or_404(Products, id)
-    # print(Products.query.filter_by(id).first())
-    
-    return render_template("shop-single.html")
+    db.get_or_404(Products, id)
+    prodURL = prodIMG.query.filter_by(id = id).first()
+    prodPrice = Products.query.filter_by(id = id).first()
+
+    print(prodURL.img1)
+
+    return render_template("shop-single.html", prodURL = prodURL, prodPrice = prodPrice)
 
 @app.route("/cart")
 def cart():
